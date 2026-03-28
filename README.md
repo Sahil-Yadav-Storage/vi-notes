@@ -1,130 +1,396 @@
-# Vi-Notes
+<div align="center">
 
-**Vi-Notes** is an authenticity verification platform designed to distinguish genuine human-written content from AI-generated or AI-assisted text. The system focuses on analyzing **writing behavior** alongside **statistical and linguistic characteristics** of the text to establish reliable authorship verification.
+# 📝 Vi-Notes
 
-This repository represents the **design and conceptual foundation** for the Vi-Notes system.
+### Authenticity Verification Platform for Writing
+
+*Distinguish natural human composition from AI-generated content through behavioral analysis*
+
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-19.2-61dafb?logo=react)](https://reactjs.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-20+-339933?logo=node.js)](https://nodejs.org/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-9.3-47A248?logo=mongodb)](https://www.mongodb.com/)
+[![License](https://img.shields.io/badge/License-Proprietary-red)]()
+
+</div>
 
 ---
 
-## Motivation
+## 🎯 Vision
 
-With the widespread availability of AI writing tools, verifying true human authorship has become increasingly challenging. Most existing detection methods rely primarily on textual analysis, which can be inconsistent and easy to bypass.
-
-Vi-Notes approaches this problem by combining:
-- Behavioral signals from the writing process
-- Statistical analysis of the written content
-- Correlation between how content is written and what is written
-
----
-
-## Core Idea
+**Vi-Notes** is built on a simple yet powerful principle: **authenticity is stronger when content and behavior agree.**
 
 Human writing naturally includes:
-- Variable typing speeds
-- Pauses during thinking
-- Revisions during idea formation
-- Irregular sentence structures
-- A relationship between content complexity and editing frequency
+- ⏸️ Pauses and hesitations
+- ✏️ Rewrites and corrections
+- ⚡ Bursts of typing activity
+- 🔄 Natural editing patterns
 
-AI-generated or pasted text often lacks these behavioral signatures.
-
-Vi-Notes is designed to capture and analyze these characteristics to assess authorship authenticity.
+AI-assisted or pasted content often shows **mismatches** between the text and how it was produced. Vi-Notes captures behavioral metadata in real-time and pairs it with session analytics to provide **verifiable authorship evidence**.
 
 ---
 
-## Key Features
+## ✨ Key Features
 
-### Writing Session Monitoring
-- Capture keystroke timing metadata (not raw key content)
-- Track pauses, deletions, edits, and writing flow
-- Detect pasted or externally inserted text blocks
+### 🔐 **Authentication & Security**
+- Email/password registration and login
+- JWT access tokens with HTTP-only refresh cookies
+- Automatic token refresh during active sessions
+- Refresh token rotation with server-side revocation
+- Rate limiting on auth endpoints
+- Hashed refresh token persistence (SHA-256)
 
-### Behavioral Pattern Analysis
-- Pause distribution before sentences and paragraphs
-- Typing speed variance
-- Revision frequency relative to text complexity
-- Micro-pauses around punctuation and structural boundaries
+### ✍️ **Rich Text Editor**
+- Distraction-free writing environment
+- Full formatting support (bold, italic, underline, headings)
+- Multiple font families and sizes
+- Text and highlight color customization
+- List support (ordered and unordered)
+- Text alignment options
+- Per-file formatting persistence
+- Auto-save scroll position
 
-### Textual Statistical Analysis
-- Sentence length variation
-- Vocabulary diversity metrics
-- Stylistic consistency analysis
-- Linguistic irregularities typical of human writing
+### 📊 **Behavioral Tracking**
+- **Keystroke timing capture** (down/up timestamps, press duration)
+- **Paste detection** with length and selection metadata
+- **Edit tracking** for pasted content modifications
+- **Pause detection** (3-second inactivity threshold)
+- **WPM (Words Per Minute)** real-time calculation
+- Privacy-first: Only metadata stored, never actual keystrokes
 
-### Cross-Verification Engine
-- Correlate keyboard behavior with text evolution
-- Identify mismatches between behavioral data and content
-- Flag suspicious uniformity patterns
+### 💾 **Session Management**
+- Create and incrementally update writing sessions
+- Automatic session analytics on close
+- Session history with detailed metrics
+- Resume previous sessions
+- Offline-first architecture with IndexedDB buffering
 
-### Authenticity Reports
-- Confidence score for human authorship
-- Highlighted suspicious segments
-- Supporting behavioral and textual indicators
-- Shareable verification summaries
+### 📈 **Analytics & Insights**
+- **Approximate WPM variance** - Consistency of typing speed
+- **Pause frequency** - Natural thinking patterns
+- **Edit ratio** - Revision behavior
+- **Paste ratio** - External content detection
+- **Character statistics** - Insertions, deletions, final count
+- **Duration tracking** - Total writing time
+- **AI probability estimation** - Authenticity scoring
 
----
+### 🌐 **Offline Resilience**
+- Durable client-side keystroke queue in IndexedDB
+- Automatic replay on reconnect
+- Exponential backoff retry logic
+- User-facing error notifications
+- Deferred session close when unsynced data remains
 
-## Tech Stack (MERN Architecture)
-
-### Frontend
-- React
-- TypeScript
-- Electron for desktop-level keyboard event access
-
-### Backend
-- Node.js
-- Express.js
-- RESTful APIs for session handling and analysis
-
-### Database
-- MongoDB
-- Encrypted storage for writing sessions, keystroke metadata, and reports
-
-### Machine Learning
-- TensorFlow / PyTorch
-- Supervised learning for human vs AI-assisted writing
-- Unsupervised anomaly detection
-- NLP-based statistical signature analysis
-
----
-
-## Privacy & Ethics
-
-Vi-Notes is designed with privacy-first principles:
-
-- No storage of raw keystroke content
-- Only timing, frequency, and structural metadata is collected
-- Encrypted data storage
-- User-controlled session tracking
-- Monitoring limited strictly to active writing sessions
+### 🎨 **Modern UI/UX**
+- Light and dark theme support
+- Responsive design (mobile, tablet, desktop)
+- Real-time status badges
+- Session visualization with charts
+- Overview dashboard with key metrics
+- Protected and guest route guards
 
 ---
 
-## Project Goals
+## 🏗️ Architecture
 
-- Restore trust in written content authenticity
-- Differentiate between human-written, AI-assisted, and AI-generated text
-- Adapt detection methods as AI writing tools evolve
-- Maintain ethical, transparent, and privacy-conscious verification
+Vi-Notes is built as a **TypeScript monorepo** with three main packages:
 
----
+```
+vi-notes/
+├── client/          # React frontend (Vite)
+├── server/          # Express backend (Node.js)
+└── shared/          # Shared TypeScript types
+```
 
-## Repository Scope
+### Tech Stack
 
-This repository currently serves as:
-- A design reference
-- A research and experimentation space
-- A foundation for future MERN-based implementation
-
----
-
-## Contributing
-
-Contributions are welcome, especially for **feature requests and their implementation**.  
-If you are interested in working on an existing feature request or proposing a new one, please open or comment on an issue to start the discussion.
+| Layer | Technologies | Purpose |
+|-------|-------------|---------|
+| **Frontend** | React 19, TypeScript, Vite, Axios, Tailwind CSS | Editor UI, event capture, auth, sync scheduling |
+| **Backend** | Node.js, Express, TypeScript, Mongoose, Zod | Auth, session APIs, validation, analytics |
+| **Shared** | TypeScript workspace package | Cross-package type contracts |
+| **Database** | MongoDB | Users, refresh tokens, documents, sessions |
+| **Security** | bcrypt, JWT, express-rate-limit | Password hashing, token management, rate limiting |
 
 ---
 
-## License
+## 🚀 Getting Started
 
-This project is licensed under the MIT License.
+### Prerequisites
+
+- **Node.js** 20+ and **npm** 10+
+- **MongoDB** (local or cloud instance)
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd vi-notes
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Configure environment variables**
+
+   Create `server/.env` from the example:
+   ```bash
+   cp server/.env.example server/.env
+   ```
+
+   Update the following required variables:
+   ```env
+   MONGODB_URI=mongodb://localhost:27017/vi-notes
+   JWT_SECRET=your_super_secret_key_here
+   JWT_REFRESH_SECRET=your_refresh_secret_key_here
+   ```
+
+   Optional variables (with defaults):
+   ```env
+   JWT_ACCESS_EXPIRES_IN=15m
+   REFRESH_TOKEN_TTL_DAYS=7
+   REFRESH_COOKIE_NAME=refreshToken
+   CLIENT_ORIGIN=http://127.0.0.1:5173
+   NODE_ENV=development
+   PORT=3001
+   ```
+
+4. **Start development servers**
+   ```bash
+   npm run dev
+   ```
+
+   This starts:
+   - **Client**: http://127.0.0.1:5173 (Vite dev server)
+   - **Server**: http://127.0.0.1:3001 (Express API)
+
+---
+
+## 📡 API Reference
+
+### Base URL
+```
+http://127.0.0.1:3001
+```
+
+### Authentication Endpoints
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| `POST` | `/api/auth/register` | None | Create user account |
+| `POST` | `/api/auth/login` | None | Login and issue tokens |
+| `POST` | `/api/auth/refresh` | Refresh cookie | Rotate refresh token and issue new access token |
+| `POST` | `/api/auth/logout` | Optional refresh cookie | Revoke token and clear cookie |
+
+### Document Endpoints
+
+All require `Authorization: Bearer <accessToken>`
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/documents` | List user's documents |
+| `POST` | `/api/documents` | Create new document |
+| `GET` | `/api/documents/:id` | Get document details |
+| `PATCH` | `/api/documents/:id` | Rename document |
+| `PATCH` | `/api/documents/:id/content` | Update document content |
+| `DELETE` | `/api/documents/:id` | Delete document |
+
+### Session Endpoints
+
+All require `Authorization: Bearer <accessToken>`
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/sessions` | Create new session |
+| `PATCH` | `/api/sessions/:id` | Append keystrokes to session |
+| `GET` | `/api/sessions` | List sessions (with optional documentId filter) |
+| `GET` | `/api/sessions/:id` | Get session details |
+| `POST` | `/api/sessions/:id/close` | Close session and compute analytics |
+
+### Analytics Endpoints
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| `GET` | `/api/analytics/:documentId` | Bearer token | Get document analytics |
+
+---
+
+## 📊 Event Model
+
+### Captured Event Types
+
+- **`down`** - Key press start
+- **`up`** - Key release
+- **`paste`** - Paste operation
+- **`edit`** - Text modification
+
+### Session Analytics (Computed on Close)
+
+```typescript
+{
+  version: number;
+  approximateWpmVariance: number;
+  pauseFrequency: number;
+  editRatio: number;
+  pasteRatio: number;
+  totalInsertedChars: number;
+  totalDeletedChars: number;
+  finalChars: number;
+  totalPastedChars: number;
+  pauseCount: number;
+  durationMs: number;
+}
+```
+
+---
+
+## 🔧 Development
+
+### Available Scripts
+
+```bash
+# Run both client and server in development mode
+npm run dev
+
+# Type-check all packages
+npm run typecheck
+
+# Build client for production
+npm run build
+
+# Lint client code
+npm run lint -w client
+```
+
+### Project Structure
+
+```
+vi-notes/
+├── client/
+│   ├── src/
+│   │   ├── components/      # Reusable UI components
+│   │   ├── contexts/        # React context providers
+│   │   ├── hooks/           # Custom React hooks
+│   │   ├── lib/             # Utility functions
+│   │   ├── offline/         # IndexedDB queue management
+│   │   ├── pages/           # Route pages
+│   │   ├── routes/          # Route guards
+│   │   ├── api.ts           # Axios instance & auth helpers
+│   │   ├── App.tsx          # Main app component
+│   │   └── styles.css       # Global styles
+│   ├── package.json
+│   └── vite.config.ts
+├── server/
+│   ├── src/
+│   │   ├── controllers/     # Request handlers
+│   │   ├── middleware/      # Express middleware
+│   │   ├── models/          # Mongoose schemas
+│   │   ├── routes/          # API routes
+│   │   ├── services/        # Business logic
+│   │   ├── types/           # TypeScript definitions
+│   │   ├── app.ts           # Express app setup
+│   │   ├── config.ts        # Environment config
+│   │   └── server.ts        # Server entry point
+│   ├── .env.example
+│   └── package.json
+├── shared/
+│   ├── src/
+│   │   ├── auth.ts          # Auth types
+│   │   ├── document.ts      # Document types
+│   │   ├── keystroke.ts     # Keystroke types
+│   │   ├── session.ts       # Session types
+│   │   └── index.ts         # Barrel export
+│   └── package.json
+└── package.json             # Root workspace config
+```
+
+---
+
+## 🔒 Privacy & Security
+
+### Data Protection
+- **Keystroke sanitization middleware** strips content fields from payloads
+- Event model stores **structural and timing metadata only**, not raw text
+- Cookie security defaults: `httpOnly`, `sameSite` protections
+- Access tokens stored in `sessionStorage` (tab-scoped, cleared on close)
+
+### Authentication Security
+- Passwords hashed with **bcrypt** (10 rounds)
+- JWT tokens with short expiration (15 minutes default)
+- Refresh token rotation prevents token reuse
+- Server-side token revocation tracking
+- Rate limiting on login/register endpoints
+
+---
+
+## 🎨 UI Themes
+
+### Light Mode
+- Base background: `#F8F8F6`
+- Clean, minimal aesthetic
+- High contrast for readability
+
+### Dark Mode (Default)
+- Base background: `#22221F`
+- Reduced eye strain
+- Modern, professional appearance
+
+Theme preference persists across sessions.
+
+---
+
+## 🚧 Current Limitations
+
+- No automated test suite configured
+- Root build script targets client only
+- Web-first implementation (no native desktop capture)
+- AI probability is currently a placeholder algorithm
+
+---
+
+## 🗺️ Roadmap
+
+### Upcoming Features
+- 🧪 Comprehensive test suite (unit, integration, e2e)
+- 📊 Richer authenticity reports with visual evidence
+- 🤖 Advanced anomaly detection pipelines
+- 🔄 Progressive adaptation to evolving AI patterns
+- 💻 Native desktop packaging with OS-level telemetry
+- 📱 Mobile app with native keyboard tracking
+- 🌍 Multi-language support
+- 🔗 Integration with learning management systems (LMS)
+
+---
+
+## 👥 Team
+
+**Mentor**: Jinal Gupta
+
+---
+
+## 📄 License
+
+This project is proprietary software. No license file is currently present.
+
+---
+
+## 🤝 Contributing
+
+This is a private project. Contributions are currently not accepted.
+
+---
+
+## 📞 Support
+
+For questions or issues, please contact the project maintainer.
+
+---
+
+<div align="center">
+
+**Built with ❤️ for authentic writing**
+
+</div>
